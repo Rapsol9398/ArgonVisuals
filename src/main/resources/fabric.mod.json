@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"id": "argonvisuals",
+	"version": "${version}",
+	"name": "ArgonVisuals",
+	"description": "Make Minecraft even MORE beautiful",
+	"authors": [
+		"Rapsol9398"
+	],
+	"contact": {
+		"discord": "https://discord.gg/H7rSThGPDY",
+		"github": "https://github.com/Rapsol9398"
+	},
+	"license": "Custom license (read LICENSE.MD)",
+	"icon": "assets/argonvisuals/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"main": [
+			"com.rapsol.Main"
+		]
+	},
+	"mixins": [
+		"argonvisuals.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.2",
+		"minecraft": "~26.1.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

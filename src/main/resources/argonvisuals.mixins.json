@@ -1,0 +1,41 @@
+{
+  "required": true,
+  "package": "com.rapsol.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "ClientConnectionMixin",
+    "EntityMixin",
+    "FogRendererMixin",
+    "GuiMixin",
+    "KeyboardHandlerMixin",
+    "MinecraftMixin",
+    "MouseHandlerMixin",
+    "NoRenderMixin",
+    "ParticleEngineMixin",
+    "ScreenMixin",
+    "accessor.LivingEntityAccessor",
+    "accessor.PlayerAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "client": [
+    "ArmorMixin",
+    "BossBarMixin",
+    "CameraMixin",
+    "EffectMixinRenderer",
+    "LightTextureMixin",
+    "MixinClouds",
+    "MixinItem",
+    "MixinSky",
+    "OverlayMixin",
+    "ShulkerTooltipMixin",
+    "WeatherMixin",
+    "MinecraftClientMixin",
+    "accessor.GuiGraphicsExtractorAccessor"
+  ]
+}
+
