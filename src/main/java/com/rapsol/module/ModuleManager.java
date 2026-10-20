@@ -37,6 +37,7 @@ public final class ModuleManager implements ButtonListener {
 		add(new ItemPhysics());
 		add(new ShulkerTooltip());
 		add(new NoRender());
+		add(new Fire());
 	}
 
 	public List<Module> getEnabledModules() {

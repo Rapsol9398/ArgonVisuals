@@ -27,6 +27,7 @@
     "BossBarMixin",
     "CameraMixin",
     "EffectMixinRenderer",
+    "FireMixin",
     "LightTextureMixin",
     "MixinClouds",
     "MixinItem",
