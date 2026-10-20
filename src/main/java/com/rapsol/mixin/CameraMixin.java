@@ -1,6 +1,7 @@
 package com.rapsol.mixin;
 
 import com.rapsol.module.modules.render.Freelook;
+import com.rapsol.module.modules.render.Zoom;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -12,6 +13,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Camera.class)
 public abstract class CameraMixin {
@@ -55,5 +57,11 @@ public abstract class CameraMixin {
 
             this.setRotation(cam.freelook$getCameraYaw(), cam.freelook$getCameraPitch());
         }
+    }
+
+    @Inject(method = "calculateFov", at = @At("RETURN"), cancellable = true)
+    private void onFov(float partialTicks, CallbackInfoReturnable<Float> cir) {
+        if (Zoom.instance != null)
+            cir.setReturnValue(Zoom.instance.applyFov(cir.getReturnValueF()));
     }
 }

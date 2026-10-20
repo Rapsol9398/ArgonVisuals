@@ -27,6 +27,7 @@
     "BossBarMixin",
     "CameraMixin",
     "EffectMixinRenderer",
+    "GameRendererMixin",
     "LightTextureMixin",
     "MixinClouds",
     "MixinItem",
@@ -36,7 +37,8 @@
     "SpriteSourceListMixin",
     "WeatherMixin",
     "MinecraftClientMixin",
-    "accessor.ItemStackRenderStateAccessor"
+    "accessor.ItemStackRenderStateAccessor",
+    "accessor.OverlayTextureAccessor"
   ]
 }
 
