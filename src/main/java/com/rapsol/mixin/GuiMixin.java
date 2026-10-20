@@ -3,7 +3,7 @@ package com.rapsol.mixin;
 import com.rapsol.Argon;
 import com.rapsol.event.EventManager;
 import com.rapsol.event.events.HudListener;
-import com.rapsol.module.modules.render.ArmorHud;
+import com.rapsol.module.modules.hud.ArmorHud;
 import com.rapsol.module.modules.render.NoRender;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;

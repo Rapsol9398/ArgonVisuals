@@ -1,6 +1,5 @@
 package com.rapsol.gui.components.settings;
 
-import com.rapsol.Argon;
 import com.rapsol.gui.components.ModuleButton;
 import com.rapsol.module.modules.client.ClickGUI;
 import com.rapsol.module.setting.Setting;
@@ -48,6 +47,7 @@ public final class StringBox extends RenderableSetting {
     @Override
     public void mouseClicked(double mouseX, double mouseY, int button) {
         if(isHovered(mouseX, mouseY) && button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+            Screen previous = mc.screen;
             mc.setScreen(new Screen(Component.empty()) {
                 private String content = setting.getValue();
 
@@ -86,7 +86,7 @@ public final class StringBox extends RenderableSetting {
                     int keyCode = event.key();
                     if(keyCode == GLFW.GLFW_KEY_ESCAPE) {
                         setting.setValue(content.strip());
-                        mc.setScreen(Argon.INSTANCE.clickGui);
+                        mc.setScreen(previous);
                     }
 
                     if(keyCode == GLFW.GLFW_KEY_V && (event.modifiers() & GLFW.GLFW_MOD_CONTROL) != 0)

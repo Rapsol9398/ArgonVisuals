@@ -2,10 +2,11 @@ package com.rapsol.module;
 
 import com.rapsol.Argon;
 import com.rapsol.event.events.ButtonListener;
-import com.rapsol.module.modules.render.ArmorHud;
 import com.rapsol.module.modules.client.ClickGUI;
-import com.rapsol.module.modules.client.HUD;
 import com.rapsol.module.modules.client.HudEditor;
+import com.rapsol.module.modules.hud.ArmorHud;
+import com.rapsol.module.modules.hud.Info;
+import com.rapsol.module.modules.hud.ModuleList;
 import com.rapsol.module.modules.render.*;
 import com.rapsol.module.setting.KeybindSetting;
 import com.rapsol.utils.printString;
@@ -29,7 +30,7 @@ public final class ModuleManager implements ButtonListener {
 		add(new Fullbright());
 		add(new Totem());
 		add(new ClickGUI());
-		add(new HUD());
+		add(new Info());
 		add(new Particle());
 		add(new Freelook());
 		add(new ArmorHud());
@@ -42,6 +43,7 @@ public final class ModuleManager implements ButtonListener {
 		add(new Hitboxes());
 		add(new MotionBlur());
 		add(new Zoom());
+		add(new ModuleList());
 	}
 
 	public List<Module> getEnabledModules() {

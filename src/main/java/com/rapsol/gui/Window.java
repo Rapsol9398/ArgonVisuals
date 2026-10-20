@@ -147,8 +147,10 @@ public final class Window {
 	}
 
 	public void mouseReleased(double mouseX, double mouseY, int button) {
-		if (button == 0 && dragging)
+		if (button == 0 && dragging) {
 			dragging = false;
+			Argon.INSTANCE.getProfileManager().markDirty();
+		}
 
 		for (ModuleButton moduleButton : moduleButtons)
 			moduleButton.mouseReleased(mouseX, mouseY, button);
@@ -178,6 +180,10 @@ public final class Window {
 		this.x = x;
 	}
 
+	public Category getCategory() {
+		return category;
+	}
+
 	public int getWidth() {
 		return width;
 	}
@@ -188,6 +194,13 @@ public final class Window {
 
 	public boolean isHovered(double mouseX, double mouseY) {
 		return ((mouseX > x && mouseX < x + width) && (mouseY > y && mouseY < y + height));
+	}
+
+	public boolean contains(double mouseX, double mouseY) {
+		int bottom = prevY + height;
+		for (ModuleButton moduleButton : moduleButtons)
+			bottom = Math.max(bottom, prevY + moduleButton.offset + (int) moduleButton.animation.getValue());
+		return mouseX > prevX && mouseX < prevX + width && mouseY > prevY && mouseY < bottom;
 	}
 
 	public boolean isPrevHovered(double mouseX, double mouseY) {

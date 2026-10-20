@@ -117,6 +117,17 @@ public final class ProfileManager {
 					p.scale = point.has("scale") ? point.get("scale").getAsDouble() : element.defaultScale;
 				}
 			}
+
+			JsonElement windowsElement = profile.get("windows");
+			if (windowsElement != null && windowsElement.isJsonObject()) {
+				JsonObject windowsJson = windowsElement.getAsJsonObject();
+				for (com.rapsol.gui.Window window : Argon.INSTANCE.clickGui.allWindows()) {
+					JsonElement windowJson = windowsJson.get(window.getCategory().name());
+					if (windowJson == null || !windowJson.isJsonObject()) continue;
+					window.setX(windowJson.getAsJsonObject().get("x").getAsInt());
+					window.setY(windowJson.getAsJsonObject().get("y").getAsInt());
+				}
+			}
 		} catch (Exception ignored) {
 		}
 	}
@@ -169,6 +180,15 @@ public final class ProfileManager {
 				hudJson.add(entry.getKey().name(), point);
 			}
 			profile.add("hud", hudJson);
+
+			JsonObject windowsJson = new JsonObject();
+			for (com.rapsol.gui.Window window : Argon.INSTANCE.clickGui.allWindows()) {
+				JsonObject position = new JsonObject();
+				position.addProperty("x", window.x);
+				position.addProperty("y", window.y);
+				windowsJson.add(window.getCategory().name(), position);
+			}
+			profile.add("windows", windowsJson);
 
 			Files.writeString(tempPath, g.toJson(profile));
 			try {

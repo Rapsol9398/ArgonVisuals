@@ -20,6 +20,7 @@ import static com.rapsol.Argon.mc;
 
 public final class ClickGui extends Screen {
 	public List<Window> windows = new ArrayList<>();
+	public final Window hudWindow;
 	public Color currentColor;
 	private static final StackWalker sw = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
 
@@ -28,9 +29,18 @@ public final class ClickGui extends Screen {
 
 		int offsetX = 50;
 		for (Category category : Category.values()) {
+			if (category == Category.HUD) continue;
 			windows.add(new Window(offsetX, 50, 230, 30, category, this));
 			offsetX += 250;
 		}
+
+		hudWindow = new Window(-1, -1, 230, 30, Category.HUD, this);
+	}
+
+	public List<Window> allWindows() {
+		List<Window> all = new ArrayList<>(windows);
+		all.add(hudWindow);
+		return all;
 	}
 
 	public boolean isDraggingAlready() {

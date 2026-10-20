@@ -1,4 +1,4 @@
-package com.rapsol.module.modules.render;
+package com.rapsol.module.modules.hud;
 
 import com.rapsol.gui.HudEditorScreen;
 import com.rapsol.gui.HudElement;
@@ -26,7 +26,7 @@ public final class ArmorHud extends Module {
     };
 
     public ArmorHud() {
-        super(printString.of("ArmorHUD"), printString.of("Displays equipped armor with durability"), -1, Category.RENDER);
+        super(printString.of("ArmorHUD"), printString.of("Displays equipped armor with durability"), -1, Category.HUD);
         addSettings(showDurability, colorDurability, vertical);
     }
 
