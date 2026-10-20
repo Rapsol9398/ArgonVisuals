@@ -20,7 +20,7 @@ public class LightTextureMixin {
             ),
             index = 0
     )
-    private float newbridge$overrideBrightness(float brightness) {
+    private float onBrightness(float brightness) {
         Fullbright fullbright = Argon.INSTANCE.getModuleManager().getModule(Fullbright.class);
         if (fullbright != null && fullbright.isEnabled()) {
             return 16;

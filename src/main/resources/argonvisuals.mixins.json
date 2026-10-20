@@ -27,16 +27,17 @@
     "BossBarMixin",
     "CameraMixin",
     "EffectMixinRenderer",
-    "FireMixin",
     "LightTextureMixin",
     "MixinClouds",
     "MixinItem",
     "MixinSky",
     "OverlayMixin",
     "ShulkerTooltipMixin",
+    "SpriteSourceListMixin",
     "WeatherMixin",
     "MinecraftClientMixin",
-    "accessor.GuiGraphicsExtractorAccessor"
+    "accessor.GuiGraphicsExtractorAccessor",
+    "accessor.ItemStackRenderStateAccessor"
   ]
 }
 

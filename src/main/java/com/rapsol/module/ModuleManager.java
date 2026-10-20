@@ -28,6 +28,7 @@ public final class ModuleManager implements ButtonListener {
 		add(new VoidColor());
 		add(new Fullbright());
 		add(new Totem());
+		add(new Fire());
 		add(new ClickGUI());
 		add(new HUD());
 		add(new Particle());
@@ -37,7 +38,6 @@ public final class ModuleManager implements ButtonListener {
 		add(new ItemPhysics());
 		add(new ShulkerTooltip());
 		add(new NoRender());
-		add(new Fire());
 	}
 
 	public List<Module> getEnabledModules() {
