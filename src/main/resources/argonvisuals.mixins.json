@@ -36,7 +36,6 @@
     "SpriteSourceListMixin",
     "WeatherMixin",
     "MinecraftClientMixin",
-    "accessor.GuiGraphicsExtractorAccessor",
     "accessor.ItemStackRenderStateAccessor"
   ]
 }
