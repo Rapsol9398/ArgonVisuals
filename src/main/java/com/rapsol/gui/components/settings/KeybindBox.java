@@ -42,13 +42,8 @@ public final class KeybindBox extends RenderableSetting {
 	@Override
 	public void keyPressed(int keyCode, int scanCode, int modifiers) {
 		if(keyCode == GLFW.GLFW_KEY_BACKSPACE) {
-			if(mouseOver) {
-				if (keybind.isModuleKey())
-					parent.module.setKey(keybind.getOriginalKey());
-
-				keybind.setKey(keybind.getOriginalKey());
-				keybind.setListening(false);
-			}
+			if(mouseOver)
+				reset();
 		} else {
 			if (keybind.isListening() && keyCode != GLFW.GLFW_KEY_ESCAPE) {
 				if (keybind.isModuleKey()) parent.module.setKey(keyCode);
@@ -88,5 +83,14 @@ public final class KeybindBox extends RenderableSetting {
 
 			context.fill(parentX(), parentY() + parentOffset() + offset, parentX() + parentWidth(), parentY() + parentOffset() + offset + parentHeight(), currentAlpha.getRGB());
 		}
+	}
+
+	@Override
+	public void reset() {
+		if (keybind.isModuleKey())
+			parent.module.setKey(keybind.getOriginalKey());
+
+		keybind.setKey(keybind.getOriginalKey());
+		keybind.setListening(false);
 	}
 }

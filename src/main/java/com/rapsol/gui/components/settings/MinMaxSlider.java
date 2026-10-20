@@ -86,12 +86,16 @@ public final class MinMaxSlider extends RenderableSetting {
 
     @Override
     public void keyPressed(int keyCode, int scanCode, int modifiers) {
-        if(mouseOver && keyCode == GLFW.GLFW_KEY_BACKSPACE) {
-            setting.setMaxValue(setting.getOriginalMaxValue());
-            setting.setMinValue(setting.getOriginalMinValue());
-        }
+        if(mouseOver && keyCode == GLFW.GLFW_KEY_BACKSPACE)
+            reset();
 
         super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public void reset() {
+        setting.setMaxValue(setting.getOriginalMaxValue());
+        setting.setMinValue(setting.getOriginalMinValue());
     }
 
     public boolean isHoveredMin(double mouseX, double mouseY) {

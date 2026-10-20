@@ -105,6 +105,9 @@ public abstract class RenderableSetting {
 	public void keyPressed(int keyCode, int scanCode, int modifiers) {
 	}
 
+	public void reset() {
+	}
+
 	public boolean isHovered(double mouseX, double mouseY) {
 		return mouseX > parentX()
 				&& mouseX < parentX() + parentWidth()

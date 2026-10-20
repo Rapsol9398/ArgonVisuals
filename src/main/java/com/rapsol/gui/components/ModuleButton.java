@@ -227,10 +227,18 @@ public final class ModuleButton {
 
 				extended = !extended;
 			}
+
+			if (button == 2) {
+				for (RenderableSetting renderableSetting : settings)
+					renderableSetting.reset();
+			}
 		}
 		if (extended) {
-			for (RenderableSetting renderableSetting : settings)
-				renderableSetting.mouseClicked(mouseX, mouseY, button);
+			for (RenderableSetting renderableSetting : settings) {
+				if (button == 2 && renderableSetting.isHovered(mouseX, mouseY))
+					renderableSetting.reset();
+				else renderableSetting.mouseClicked(mouseX, mouseY, button);
+			}
 		}
 	}
 

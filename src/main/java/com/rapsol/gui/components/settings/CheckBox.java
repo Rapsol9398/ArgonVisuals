@@ -51,10 +51,15 @@ public final class CheckBox extends RenderableSetting {
 	public void keyPressed(int keyCode, int scanCode, int modifiers) {
 		if(mouseOver && parent.extended) {
 			if(keyCode == GLFW.GLFW_KEY_BACKSPACE)
-				setting.setValue(setting.getOriginalValue());
+				reset();
 		}
 
 		super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
+	public void reset() {
+		setting.setValue(setting.getOriginalValue());
 	}
 
 	@Override
