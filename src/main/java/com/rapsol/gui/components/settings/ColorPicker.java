@@ -6,7 +6,7 @@ import com.rapsol.module.setting.Setting;
 import com.rapsol.utils.ColorUtils;
 import com.rapsol.utils.TextRenderer;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.awt.*;
 
@@ -178,7 +178,7 @@ public final class ColorPicker extends RenderableSetting {
 
 	@Override
 	public void mouseClicked(double mouseX, double mouseY, int button) {
-		if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+		if (button == InputConstants.MOUSE_BUTTON_LEFT) {
 			if (open) {
 				if (inSV(mouseX, mouseY))    { draggingSV    = true; applySV(mouseX, mouseY); return; }
 				if (inHue(mouseX, mouseY))   { draggingHue   = true; applyHue(mouseX);         return; }
@@ -192,7 +192,7 @@ public final class ColorPicker extends RenderableSetting {
 
 	@Override
 	public void mouseReleased(double mouseX, double mouseY, int button) {
-		if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+		if (button == InputConstants.MOUSE_BUTTON_LEFT) {
 			draggingSV = draggingHue = draggingAlpha = false;
 		}
 		super.mouseReleased(mouseX, mouseY, button);
@@ -209,9 +209,9 @@ public final class ColorPicker extends RenderableSetting {
 	@Override
 	public void keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (mouseOver && parent.extended) {
-			if (keyCode == GLFW.GLFW_KEY_BACKSPACE) {
+			if (keyCode == InputConstants.KEY_BACKSPACE) {
 				reset();
-			} else if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+			} else if (keyCode == InputConstants.KEY_ESCAPE) {
 				open = false;
 			}
 		}

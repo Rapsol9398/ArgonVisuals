@@ -24,7 +24,7 @@ public final class HudEditor extends Module {
         if (clickGui != null && clickGui.isEnabled()) {
             clickGui.setEnabledStatus(false);
         }
-        mc.execute(() -> mc.setScreen(new HudEditorScreen()));
+        mc.execute(() -> mc.gui.setScreen(new HudEditorScreen()));
         super.onEnable();
     }
 }

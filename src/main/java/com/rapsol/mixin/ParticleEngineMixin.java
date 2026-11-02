@@ -1,6 +1,7 @@
 package com.rapsol.mixin;
 
 import com.rapsol.Argon;
+import com.rapsol.mixin.accessor.ParticleGroupAccessor;
 import com.rapsol.module.modules.render.Particle;
 import net.minecraft.client.Camera;
 import net.minecraft.client.particle.ParticleGroup;
@@ -38,7 +39,7 @@ public class ParticleEngineMixin {
 		if (module == null || !module.isEnabled()) return;
 
 		for (ParticleGroup<?> group : particles.values()) {
-			group.getAll().removeIf(particle -> shouldHideParticle(module, particle));
+			((ParticleGroupAccessor) group).argon$getParticles().removeIf(particle -> shouldHideParticle(module, particle));
 		}
 	}
 

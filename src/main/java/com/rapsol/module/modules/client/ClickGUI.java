@@ -9,7 +9,7 @@ import com.rapsol.module.setting.ColorSetting;
 import com.rapsol.module.setting.ModeSetting;
 import com.rapsol.module.setting.NumberSetting;
 import com.rapsol.utils.printString;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.awt.*;
 
@@ -34,7 +34,7 @@ public final class ClickGUI extends Module {
 		super(
 				printString.of("ArgonVisuals"),
 				printString.of("Settings"),
-				GLFW.GLFW_KEY_RIGHT_SHIFT,
+				InputConstants.KEY_RSHIFT,
 				Category.CLIENT
 		);
 
@@ -43,16 +43,16 @@ public final class ClickGUI extends Module {
 
 	@Override
 	public void onEnable() {
-		Argon.INSTANCE.previousScreen = mc.screen;
-		mc.setScreen(Argon.INSTANCE.clickGui);
+		Argon.INSTANCE.previousScreen = mc.gui.screen();
+		mc.gui.setScreen(Argon.INSTANCE.clickGui);
 		super.onEnable();
 	}
 
 	@Override
 	public void onDisable() {
-		if (mc.screen instanceof ClickGui) {
+		if (mc.gui.screen() instanceof ClickGui) {
 			Argon.INSTANCE.clickGui.onClose();
-			mc.setScreen(Argon.INSTANCE.previousScreen);
+			mc.gui.setScreen(Argon.INSTANCE.previousScreen);
 			Argon.INSTANCE.clickGui.onGuiClose();
 		}
 		super.onDisable();

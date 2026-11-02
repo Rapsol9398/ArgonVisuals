@@ -37,7 +37,7 @@ public final class ArmorHud extends Module {
     public void onHudRender(GuiGraphicsExtractor context) {
         if (!isEnabled()) return;
         if (mc.player == null || mc.level == null) return;
-        if (mc.screen != null && !(mc.screen instanceof HudEditorScreen)) return;
+        if (mc.gui.screen() != null && !(mc.gui.screen() instanceof HudEditorScreen)) return;
 
         HudPoint point = layout();
         float s = (float) point.scale;

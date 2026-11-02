@@ -8,13 +8,13 @@ import com.rapsol.module.setting.NumberSetting;
 import com.rapsol.utils.KeyUtils;
 import com.rapsol.utils.printString;
 import net.minecraft.util.Mth;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 public final class Zoom extends Module {
 
 	public static Zoom instance;
 
-	public final KeybindSetting holdKey = new KeybindSetting(printString.of("Hold Key"), GLFW.GLFW_KEY_C, false)
+	public final KeybindSetting holdKey = new KeybindSetting(printString.of("Hold Key"), InputConstants.KEY_C, false)
 			.setDescription(printString.of("Zooms while held, unbound the module key toggles zoom"));
 	public final NumberSetting zoom = new NumberSetting(printString.of("Zoom"), 1.5, 20.0, 4.0, 0.1)
 			.setDescription(printString.of("How far you zoom in"));
@@ -51,7 +51,7 @@ public final class Zoom extends Module {
 		float delta = lastTime == 0 ? 0 : (now - lastTime) / 1e9f;
 		lastTime = now;
 
-		boolean held = isEnabled() && (holdKey.getKey() == GLFW.GLFW_KEY_UNKNOWN || mc.screen == null && KeyUtils.isKeyPressed(holdKey.getKey()));
+		boolean held = isEnabled() && (holdKey.getKey() == -1 || mc.gui.screen() == null && KeyUtils.isKeyPressed(holdKey.getKey()));
 		if (held && !zooming)
 			level = zoom.getValueFloat();
 		zooming = held;

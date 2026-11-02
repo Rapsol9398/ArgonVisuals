@@ -9,7 +9,7 @@ import com.rapsol.utils.RenderUtils;
 import com.rapsol.utils.TextRenderer;
 import com.rapsol.utils.Utils;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.awt.*;
 import java.util.*;
@@ -261,7 +261,7 @@ public final class ParticlePanel {
 			close();
 			return;
 		}
-		if (button != GLFW.GLFW_MOUSE_BUTTON_LEFT) return;
+		if (button != InputConstants.MOUSE_BUTTON_LEFT) return;
 
 		if (mouseY < y + ROW) {
 			search.blur();
@@ -305,7 +305,7 @@ public final class ParticlePanel {
 	}
 
 	public void mouseReleased(int button) {
-		if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT)
+		if (button == InputConstants.MOUSE_BUTTON_LEFT)
 			dragging = false;
 	}
 
@@ -315,15 +315,15 @@ public final class ParticlePanel {
 	}
 
 	public void keyPressed(int keyCode, int modifiers) {
-		if (keyCode == GLFW.GLFW_KEY_F && (modifiers & GLFW.GLFW_MOD_CONTROL) != 0) {
+		if (keyCode == InputConstants.KEY_F && (modifiers & InputConstants.MOD_CONTROL) != 0) {
 			search.focus();
-		} else if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+		} else if (keyCode == InputConstants.KEY_ESCAPE) {
 			if (!search.escape()) close();
 			scrollRow = 0;
-		} else if (keyCode == GLFW.GLFW_KEY_BACKSPACE) {
+		} else if (keyCode == InputConstants.KEY_BACKSPACE) {
 			search.backspace();
 			scrollRow = 0;
-		} else if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
+		} else if (keyCode == InputConstants.KEY_RETURN || keyCode == InputConstants.KEY_NUMPADENTER) {
 			search.blur();
 		}
 	}

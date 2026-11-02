@@ -17,7 +17,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -179,7 +179,7 @@ public class HudEditorScreen extends Screen {
             double ny = Math.max(0, Math.min(height - dragging.h(), my - dragOffY));
             dragging.setPos(nx, ny);
 
-            if (!KeyUtils.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
+            if (!KeyUtils.isKeyPressed(InputConstants.KEY_LSHIFT)) {
                 if (dragging.point().offsetX < 4) dragging.point().offsetX = 0;
                 if (dragging.point().offsetY < 4) dragging.point().offsetY = 0;
             }
@@ -197,7 +197,7 @@ public class HudEditorScreen extends Screen {
 
     @Override
     public boolean keyPressed(KeyEvent event) {
-        Argon.INSTANCE.clickGui.hudWindow.keyPressed(event.key(), event.scancode(), event.modifiers());
+        Argon.INSTANCE.clickGui.hudWindow.keyPressed(event.key(), event.keycode(), event.modifiers());
         return super.keyPressed(event);
     }
 

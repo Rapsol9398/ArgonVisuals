@@ -1,233 +1,345 @@
 package com.rapsol.utils;
 
-import org.apache.commons.lang3.StringUtils;
-import org.lwjgl.glfw.GLFW;
-
-import static com.rapsol.Argon.mc;
+import com.mojang.blaze3d.platform.InputConstants;
+import org.lwjgl.sdl.SDLKeyboard;
+import org.lwjgl.sdl.SDLMouse;
 
 public final class KeyUtils {
+	public static final int MOUSE = 1000;
 
 	public static CharSequence getKey(int key) {
 		switch (key) {
-			case GLFW.GLFW_MOUSE_BUTTON_3 -> {
+			case MOUSE + InputConstants.MOUSE_BUTTON_MIDDLE -> {
 				return printString.of("MMB");
 			}
-			case GLFW.GLFW_KEY_UNKNOWN -> {
+			case -1 -> {
 				return printString.of("Unknown");
 			}
-			case GLFW.GLFW_KEY_ESCAPE -> {
+			case InputConstants.KEY_ESCAPE -> {
 				return printString.of("Esc");
 			}
-			case GLFW.GLFW_KEY_GRAVE_ACCENT -> {
+			case InputConstants.KEY_GRAVE -> {
 				return printString.of("Grave Accent");
 			}
-			case GLFW.GLFW_KEY_WORLD_1 -> {
-				return printString.of("World 1");
-			}
-			case GLFW.GLFW_KEY_WORLD_2 -> {
-				return printString.of("World 2");
-			}
-			case GLFW.GLFW_KEY_PRINT_SCREEN -> {
+			case InputConstants.KEY_PRINTSCREEN -> {
 				return printString.of("Print Screen");
 			}
-			case GLFW.GLFW_KEY_PAUSE -> {
+			case InputConstants.KEY_PAUSE -> {
 				return printString.of("Pause");
 			}
-			case GLFW.GLFW_KEY_INSERT -> {
+			case InputConstants.KEY_INSERT -> {
 				return printString.of("Insert");
 			}
-			case GLFW.GLFW_KEY_DELETE -> {
+			case InputConstants.KEY_DELETE -> {
 				return printString.of("Delete");
 			}
-			case GLFW.GLFW_KEY_HOME -> {
+			case InputConstants.KEY_HOME -> {
 				return printString.of("Home");
 			}
-			case GLFW.GLFW_KEY_PAGE_UP -> {
+			case InputConstants.KEY_PAGEUP -> {
 				return printString.of("Page Up");
 			}
-			case GLFW.GLFW_KEY_PAGE_DOWN -> {
+			case InputConstants.KEY_PAGEDOWN -> {
 				return printString.of("Page Down");
 			}
-			case GLFW.GLFW_KEY_END -> {
+			case InputConstants.KEY_END -> {
 				return printString.of("End");
 			}
-			case GLFW.GLFW_KEY_TAB -> {
+			case InputConstants.KEY_TAB -> {
 				return printString.of("Tab");
 			}
-			case GLFW.GLFW_KEY_LEFT_CONTROL -> {
+			case InputConstants.KEY_LCONTROL -> {
 				return printString.of("Left Control");
 			}
-			case GLFW.GLFW_KEY_RIGHT_CONTROL -> {
+			case InputConstants.KEY_RCONTROL -> {
 				return printString.of("Right Control");
 			}
-			case GLFW.GLFW_KEY_LEFT_ALT -> {
+			case InputConstants.KEY_LALT -> {
 				return printString.of("Left Alt");
 			}
-			case GLFW.GLFW_KEY_RIGHT_ALT -> {
+			case InputConstants.KEY_RALT -> {
 				return printString.of("Right Alt");
 			}
-			case GLFW.GLFW_KEY_LEFT_SHIFT -> {
+			case InputConstants.KEY_LSHIFT -> {
 				return printString.of("Left Shift");
 			}
-			case GLFW.GLFW_KEY_RIGHT_SHIFT -> {
+			case InputConstants.KEY_RSHIFT -> {
 				return printString.of("Right Shift");
 			}
-			case GLFW.GLFW_KEY_UP -> {
+			case InputConstants.KEY_UP -> {
 				return printString.of("Arrow Up");
 			}
-			case GLFW.GLFW_KEY_DOWN -> {
+			case InputConstants.KEY_DOWN -> {
 				return printString.of("Arrow Down");
 			}
-			case GLFW.GLFW_KEY_LEFT -> {
+			case InputConstants.KEY_LEFT -> {
 				return printString.of("Arrow Left");
 			}
-			case GLFW.GLFW_KEY_RIGHT -> {
+			case InputConstants.KEY_RIGHT -> {
 				return printString.of("Arrow Right");
 			}
-			case GLFW.GLFW_KEY_APOSTROPHE -> {
+			case InputConstants.KEY_APOSTROPHE -> {
 				return printString.of("Apostrophe");
 			}
-			case GLFW.GLFW_KEY_BACKSPACE -> {
+			case InputConstants.KEY_BACKSPACE -> {
 				return printString.of("Backspace");
 			}
-			case GLFW.GLFW_KEY_CAPS_LOCK -> {
+			case InputConstants.KEY_CAPSLOCK -> {
 				return printString.of("Caps Lock");
 			}
-			case GLFW.GLFW_KEY_MENU -> {
-				return printString.of("Menu");
-			}
-			case GLFW.GLFW_KEY_LEFT_SUPER -> {
+			case InputConstants.KEY_LGUI -> {
 				return printString.of("Left Super");
 			}
-			case GLFW.GLFW_KEY_RIGHT_SUPER -> {
+			case InputConstants.KEY_RGUI -> {
 				return printString.of("Right Super");
 			}
-			case GLFW.GLFW_KEY_ENTER -> {
+			case InputConstants.KEY_RETURN -> {
 				return printString.of("Enter");
 			}
-			case GLFW.GLFW_KEY_KP_ENTER -> {
+			case InputConstants.KEY_NUMPADENTER -> {
 				return printString.of("Numpad Enter");
 			}
-			case GLFW.GLFW_KEY_NUM_LOCK -> {
+			case InputConstants.KEY_NUMLOCK -> {
 				return printString.of("Num Lock");
 			}
-			case GLFW.GLFW_KEY_SPACE -> {
+			case InputConstants.KEY_SPACE -> {
 				return printString.of("Space");
 			}
-			case GLFW.GLFW_KEY_F1 -> {
+			case InputConstants.KEY_F1 -> {
 				return printString.of("F1");
 			}
-			case GLFW.GLFW_KEY_F2 -> {
+			case InputConstants.KEY_F2 -> {
 				return printString.of("F2");
 			}
-			case GLFW.GLFW_KEY_F3 -> {
+			case InputConstants.KEY_F3 -> {
 				return printString.of("F3");
 			}
-			case GLFW.GLFW_KEY_F4 -> {
+			case InputConstants.KEY_F4 -> {
 				return printString.of("F4");
 			}
-			case GLFW.GLFW_KEY_F5 -> {
+			case InputConstants.KEY_F5 -> {
 				return printString.of("F5");
 			}
-			case GLFW.GLFW_KEY_F6 -> {
+			case InputConstants.KEY_F6 -> {
 				return printString.of("F6");
 			}
-			case GLFW.GLFW_KEY_F7 -> {
+			case InputConstants.KEY_F7 -> {
 				return printString.of("F7");
 			}
-			case GLFW.GLFW_KEY_F8 -> {
+			case InputConstants.KEY_F8 -> {
 				return printString.of("F8");
 			}
-			case GLFW.GLFW_KEY_F9 -> {
+			case InputConstants.KEY_F9 -> {
 				return printString.of("F9");
 			}
-			case GLFW.GLFW_KEY_F10 -> {
+			case InputConstants.KEY_F10 -> {
 				return printString.of("F10");
 			}
-			case GLFW.GLFW_KEY_F11 -> {
+			case InputConstants.KEY_F11 -> {
 				return printString.of("F11");
 			}
-			case GLFW.GLFW_KEY_F12 -> {
+			case InputConstants.KEY_F12 -> {
 				return printString.of("F12");
 			}
-			case GLFW.GLFW_KEY_F13 -> {
+			case InputConstants.KEY_F13 -> {
 				return printString.of("F13");
 			}
-			case GLFW.GLFW_KEY_F14 -> {
+			case InputConstants.KEY_F14 -> {
 				return printString.of("F14");
 			}
-			case GLFW.GLFW_KEY_F15 -> {
+			case InputConstants.KEY_F15 -> {
 				return printString.of("F15");
 			}
-			case GLFW.GLFW_KEY_F16 -> {
+			case InputConstants.KEY_F16 -> {
 				return printString.of("F16");
 			}
-			case GLFW.GLFW_KEY_F17 -> {
+			case InputConstants.KEY_F17 -> {
 				return printString.of("F17");
 			}
-			case GLFW.GLFW_KEY_F18 -> {
+			case InputConstants.KEY_F18 -> {
 				return printString.of("F18");
 			}
-			case GLFW.GLFW_KEY_F19 -> {
+			case InputConstants.KEY_F19 -> {
 				return printString.of("F19");
 			}
-			case GLFW.GLFW_KEY_F20 -> {
+			case InputConstants.KEY_F20 -> {
 				return printString.of("F20");
 			}
-			case GLFW.GLFW_KEY_F21 -> {
+			case InputConstants.KEY_F21 -> {
 				return printString.of("F21");
 			}
-			case GLFW.GLFW_KEY_F22 -> {
+			case InputConstants.KEY_F22 -> {
 				return printString.of("F22");
 			}
-			case GLFW.GLFW_KEY_F23 -> {
+			case InputConstants.KEY_F23 -> {
 				return printString.of("F23");
 			}
-			case GLFW.GLFW_KEY_F24 -> {
+			case InputConstants.KEY_F24 -> {
 				return printString.of("F24");
 			}
-			case GLFW.GLFW_KEY_F25 -> {
-				return printString.of("F25");
-			}
-			case GLFW.GLFW_KEY_SCROLL_LOCK -> {
+			case InputConstants.KEY_SCROLLLOCK -> {
 				return printString.of("Scroll Lock");
 			}
-			case GLFW.GLFW_KEY_LEFT_BRACKET -> {
+			case InputConstants.KEY_LBRACKET -> {
 				return printString.of("Left Bracket");
 			}
-			case GLFW.GLFW_KEY_RIGHT_BRACKET -> {
+			case InputConstants.KEY_RBRACKET -> {
 				return printString.of("Right Bracket");
 			}
-			case GLFW.GLFW_KEY_SEMICOLON -> {
+			case InputConstants.KEY_SEMICOLON -> {
 				return printString.of("Semicolon");
 			}
-			case GLFW.GLFW_KEY_EQUAL -> {
+			case InputConstants.KEY_EQUALS -> {
 				return printString.of("Equals");
 			}
-			case GLFW.GLFW_KEY_BACKSLASH -> {
+			case InputConstants.KEY_BACKSLASH -> {
 				return printString.of("Backslash");
 			}
-			case GLFW.GLFW_KEY_COMMA -> {
+			case InputConstants.KEY_COMMA -> {
 				return printString.of("Comma");
 			}
-			case GLFW.GLFW_MOUSE_BUTTON_LEFT -> {
+			case MOUSE + InputConstants.MOUSE_BUTTON_LEFT -> {
 				return printString.of("LMB");
 			}
-			case GLFW.GLFW_MOUSE_BUTTON_RIGHT -> {
+			case MOUSE + InputConstants.MOUSE_BUTTON_RIGHT -> {
 				return printString.of("RMB");
 			}
 			default -> {
-				String keyName = GLFW.glfwGetKeyName(key, 0);
-				if (keyName == null) return printString.of("None");
-				return StringUtils.capitalize(keyName);
+				String keyName = SDLKeyboard.SDL_GetKeyName(SDLKeyboard.SDL_GetKeyFromScancode(key, (short) 0, false));
+				if (keyName == null || keyName.isEmpty()) return printString.of("None");
+				return keyName;
 			}
 		}
 	}
 
 	public static boolean isKeyPressed(int keyCode) {
-		if (keyCode <= 8)
-			return GLFW.glfwGetMouseButton(mc.getWindow().handle(), keyCode) == GLFW.GLFW_PRESS;
+		if (keyCode > MOUSE)
+			return (SDLMouse.SDL_GetMouseState(null, null) & 1 << keyCode - MOUSE - 1) != 0;
 
-		return GLFW.glfwGetKey(mc.getWindow().handle(), keyCode) == GLFW.GLFW_PRESS;
+		return keyCode > 0 && InputConstants.isKeyDown(keyCode);
+	}
+
+	public static int fromGlfw(int key) {
+		return switch (key) {
+			case 0 -> MOUSE + InputConstants.MOUSE_BUTTON_LEFT;
+			case 1 -> MOUSE + InputConstants.MOUSE_BUTTON_RIGHT;
+			case 2 -> MOUSE + InputConstants.MOUSE_BUTTON_MIDDLE;
+			case 3, 4, 5, 6, 7 -> MOUSE + key + 1;
+			case 32 -> InputConstants.KEY_SPACE;
+			case 39 -> InputConstants.KEY_APOSTROPHE;
+			case 44 -> InputConstants.KEY_COMMA;
+			case 45 -> InputConstants.KEY_MINUS;
+			case 46 -> InputConstants.KEY_PERIOD;
+			case 47 -> InputConstants.KEY_SLASH;
+			case 48 -> InputConstants.KEY_0;
+			case 49 -> InputConstants.KEY_1;
+			case 50 -> InputConstants.KEY_2;
+			case 51 -> InputConstants.KEY_3;
+			case 52 -> InputConstants.KEY_4;
+			case 53 -> InputConstants.KEY_5;
+			case 54 -> InputConstants.KEY_6;
+			case 55 -> InputConstants.KEY_7;
+			case 56 -> InputConstants.KEY_8;
+			case 57 -> InputConstants.KEY_9;
+			case 59 -> InputConstants.KEY_SEMICOLON;
+			case 61 -> InputConstants.KEY_EQUALS;
+			case 65 -> InputConstants.KEY_A;
+			case 66 -> InputConstants.KEY_B;
+			case 67 -> InputConstants.KEY_C;
+			case 68 -> InputConstants.KEY_D;
+			case 69 -> InputConstants.KEY_E;
+			case 70 -> InputConstants.KEY_F;
+			case 71 -> InputConstants.KEY_G;
+			case 72 -> InputConstants.KEY_H;
+			case 73 -> InputConstants.KEY_I;
+			case 74 -> InputConstants.KEY_J;
+			case 75 -> InputConstants.KEY_K;
+			case 76 -> InputConstants.KEY_L;
+			case 77 -> InputConstants.KEY_M;
+			case 78 -> InputConstants.KEY_N;
+			case 79 -> InputConstants.KEY_O;
+			case 80 -> InputConstants.KEY_P;
+			case 81 -> InputConstants.KEY_Q;
+			case 82 -> InputConstants.KEY_R;
+			case 83 -> InputConstants.KEY_S;
+			case 84 -> InputConstants.KEY_T;
+			case 85 -> InputConstants.KEY_U;
+			case 86 -> InputConstants.KEY_V;
+			case 87 -> InputConstants.KEY_W;
+			case 88 -> InputConstants.KEY_X;
+			case 89 -> InputConstants.KEY_Y;
+			case 90 -> InputConstants.KEY_Z;
+			case 91 -> InputConstants.KEY_LBRACKET;
+			case 92 -> InputConstants.KEY_BACKSLASH;
+			case 93 -> InputConstants.KEY_RBRACKET;
+			case 96 -> InputConstants.KEY_GRAVE;
+			case 256 -> InputConstants.KEY_ESCAPE;
+			case 257 -> InputConstants.KEY_RETURN;
+			case 258 -> InputConstants.KEY_TAB;
+			case 259 -> InputConstants.KEY_BACKSPACE;
+			case 260 -> InputConstants.KEY_INSERT;
+			case 261 -> InputConstants.KEY_DELETE;
+			case 262 -> InputConstants.KEY_RIGHT;
+			case 263 -> InputConstants.KEY_LEFT;
+			case 264 -> InputConstants.KEY_DOWN;
+			case 265 -> InputConstants.KEY_UP;
+			case 266 -> InputConstants.KEY_PAGEUP;
+			case 267 -> InputConstants.KEY_PAGEDOWN;
+			case 268 -> InputConstants.KEY_HOME;
+			case 269 -> InputConstants.KEY_END;
+			case 280 -> InputConstants.KEY_CAPSLOCK;
+			case 281 -> InputConstants.KEY_SCROLLLOCK;
+			case 282 -> InputConstants.KEY_NUMLOCK;
+			case 283 -> InputConstants.KEY_PRINTSCREEN;
+			case 284 -> InputConstants.KEY_PAUSE;
+			case 290 -> InputConstants.KEY_F1;
+			case 291 -> InputConstants.KEY_F2;
+			case 292 -> InputConstants.KEY_F3;
+			case 293 -> InputConstants.KEY_F4;
+			case 294 -> InputConstants.KEY_F5;
+			case 295 -> InputConstants.KEY_F6;
+			case 296 -> InputConstants.KEY_F7;
+			case 297 -> InputConstants.KEY_F8;
+			case 298 -> InputConstants.KEY_F9;
+			case 299 -> InputConstants.KEY_F10;
+			case 300 -> InputConstants.KEY_F11;
+			case 301 -> InputConstants.KEY_F12;
+			case 302 -> InputConstants.KEY_F13;
+			case 303 -> InputConstants.KEY_F14;
+			case 304 -> InputConstants.KEY_F15;
+			case 305 -> InputConstants.KEY_F16;
+			case 306 -> InputConstants.KEY_F17;
+			case 307 -> InputConstants.KEY_F18;
+			case 308 -> InputConstants.KEY_F19;
+			case 309 -> InputConstants.KEY_F20;
+			case 310 -> InputConstants.KEY_F21;
+			case 311 -> InputConstants.KEY_F22;
+			case 312 -> InputConstants.KEY_F23;
+			case 313 -> InputConstants.KEY_F24;
+			case 320 -> InputConstants.KEY_NUMPAD0;
+			case 321 -> InputConstants.KEY_NUMPAD1;
+			case 322 -> InputConstants.KEY_NUMPAD2;
+			case 323 -> InputConstants.KEY_NUMPAD3;
+			case 324 -> InputConstants.KEY_NUMPAD4;
+			case 325 -> InputConstants.KEY_NUMPAD5;
+			case 326 -> InputConstants.KEY_NUMPAD6;
+			case 327 -> InputConstants.KEY_NUMPAD7;
+			case 328 -> InputConstants.KEY_NUMPAD8;
+			case 329 -> InputConstants.KEY_NUMPAD9;
+			case 330 -> InputConstants.KEY_NUMPADCOMMA;
+			case 332 -> InputConstants.KEY_MULTIPLY;
+			case 334 -> InputConstants.KEY_ADD;
+			case 335 -> InputConstants.KEY_NUMPADENTER;
+			case 336 -> InputConstants.KEY_NUMPADEQUALS;
+			case 340 -> InputConstants.KEY_LSHIFT;
+			case 341 -> InputConstants.KEY_LCONTROL;
+			case 342 -> InputConstants.KEY_LALT;
+			case 343 -> InputConstants.KEY_LGUI;
+			case 344 -> InputConstants.KEY_RSHIFT;
+			case 345 -> InputConstants.KEY_RCONTROL;
+			case 346 -> InputConstants.KEY_RALT;
+			case 347 -> InputConstants.KEY_RGUI;
+			default -> -1;
+		};
 	}
 }

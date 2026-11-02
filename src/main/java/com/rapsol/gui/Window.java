@@ -184,7 +184,7 @@ public final class Window {
 	}
 
 	public void mouseReleased(double mouseX, double mouseY, int button) {
-		if (button == 0 && dragging) {
+		if (button == 1 && dragging) {
 			dragging = false;
 			Argon.INSTANCE.getProfileManager().markDirty();
 		}

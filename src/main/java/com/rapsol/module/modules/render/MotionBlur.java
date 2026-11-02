@@ -67,7 +67,7 @@ public final class MotionBlur extends Module {
 			}
 		}
 
-		chain.process(mc.getMainRenderTarget(), allocator);
+		chain.process(mc.gameRenderer.mainRenderTarget(), allocator);
 	}
 
 	private void close() {

@@ -10,7 +10,7 @@ import com.rapsol.utils.Utils;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.util.Mth;
 import org.joml.Matrix3x2fStack;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.awt.*;
 
@@ -72,7 +72,7 @@ public final class MinMaxSlider extends RenderableSetting {
 
     @Override
     public void mouseClicked(double mouseX, double mouseY, int button) {
-        if(button == 0) {
+        if(button == 1) {
             if (isHoveredMin(mouseX, mouseY) || isMouseInMin(mouseX, mouseY)) {
                 draggingMin = true;
                 slideMin(mouseX);
@@ -86,7 +86,7 @@ public final class MinMaxSlider extends RenderableSetting {
 
     @Override
     public void keyPressed(int keyCode, int scanCode, int modifiers) {
-        if(mouseOver && keyCode == GLFW.GLFW_KEY_BACKSPACE)
+        if(mouseOver && keyCode == InputConstants.KEY_BACKSPACE)
             reset();
 
         super.keyPressed(keyCode, scanCode, modifiers);
@@ -128,7 +128,7 @@ public final class MinMaxSlider extends RenderableSetting {
 
     @Override
     public void mouseReleased(double mouseX, double mouseY, int button) {
-        if(button == 0) {
+        if(button == 1) {
             if (draggingMin)
                 draggingMin = false;
 

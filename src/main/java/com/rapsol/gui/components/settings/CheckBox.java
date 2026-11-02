@@ -7,7 +7,7 @@ import com.rapsol.utils.ColorUtils;
 import com.rapsol.utils.TextRenderer;
 import com.rapsol.utils.Utils;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.awt.*;
 
@@ -50,7 +50,7 @@ public final class CheckBox extends RenderableSetting {
 	@Override
 	public void keyPressed(int keyCode, int scanCode, int modifiers) {
 		if(mouseOver && parent.extended) {
-			if(keyCode == GLFW.GLFW_KEY_BACKSPACE)
+			if(keyCode == InputConstants.KEY_BACKSPACE)
 				reset();
 		}
 
@@ -64,7 +64,7 @@ public final class CheckBox extends RenderableSetting {
 
 	@Override
 	public void mouseClicked(double mouseX, double mouseY, int button) {
-		if (isHovered(mouseX, mouseY) && button == GLFW.GLFW_MOUSE_BUTTON_LEFT)
+		if (isHovered(mouseX, mouseY) && button == InputConstants.MOUSE_BUTTON_LEFT)
 			setting.toggle();
 
 		super.mouseClicked(mouseX, mouseY, button);

@@ -3,7 +3,6 @@ package com.rapsol.mixin;
 import com.mojang.blaze3d.resource.CrossFrameResourcePool;
 import com.rapsol.Argon;
 import com.rapsol.module.modules.render.MotionBlur;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,11 +20,11 @@ public class GameRendererMixin {
             method = "render",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/renderer/GameRenderer;renderLevel(Lnet/minecraft/client/DeltaTracker;)V",
+                    target = "Lnet/minecraft/client/renderer/GameRenderer;renderLevel()V",
                     shift = At.Shift.AFTER
             )
     )
-    private void onRenderLevel(DeltaTracker deltaTracker, boolean advanceGameTime, CallbackInfo ci) {
+    private void onRenderLevel(CallbackInfo ci) {
         MotionBlur motionBlur = Argon.INSTANCE.getModuleManager().getModule(MotionBlur.class);
         if (motionBlur != null && motionBlur.isEnabled())
             motionBlur.process(resourcePool);

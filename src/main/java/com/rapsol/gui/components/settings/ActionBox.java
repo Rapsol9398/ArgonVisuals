@@ -6,7 +6,7 @@ import com.rapsol.module.setting.Setting;
 import com.rapsol.utils.ColorUtils;
 import com.rapsol.utils.TextRenderer;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.awt.*;
 
@@ -41,7 +41,7 @@ public final class ActionBox extends RenderableSetting {
 
 	@Override
 	public void mouseClicked(double mouseX, double mouseY, int button) {
-		if (isHovered(mouseX, mouseY) && button == GLFW.GLFW_MOUSE_BUTTON_LEFT)
+		if (isHovered(mouseX, mouseY) && button == InputConstants.MOUSE_BUTTON_LEFT)
 			setting.run();
 
 		super.mouseClicked(mouseX, mouseY, button);

@@ -3,6 +3,7 @@ package com.rapsol.mixin;
 import com.rapsol.event.EventManager;
 import com.rapsol.event.events.ButtonListener;
 import com.rapsol.module.modules.render.Zoom;
+import com.rapsol.utils.KeyUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.input.MouseButtonInfo;
@@ -21,12 +22,12 @@ public class MouseHandlerMixin {
 
 	@Inject(method = "onButton", at = @At("HEAD"))
 	private void onMousePress(long window, MouseButtonInfo buttonInfo, int action, CallbackInfo ci) {
-		EventManager.fire(new ButtonListener.ButtonEvent(buttonInfo.button(), window, action));
+		EventManager.fire(new ButtonListener.ButtonEvent(KeyUtils.MOUSE + buttonInfo.button(), window, action));
 	}
 
 	@Inject(method = "onScroll", at = @At("HEAD"), cancellable = true)
 	private void onMouseScroll(long window, double xOffset, double yOffset, CallbackInfo ci) {
-		if (minecraft.screen == null && Zoom.isActive() && Zoom.instance.onScroll(yOffset))
+		if (minecraft.gui.screen() == null && Zoom.isActive() && Zoom.instance.onScroll(yOffset))
 			ci.cancel();
 	}
 

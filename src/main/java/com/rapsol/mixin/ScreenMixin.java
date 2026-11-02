@@ -20,7 +20,7 @@ public class ScreenMixin {
 
 	@Inject(method = "extractBackground", at = @At("HEAD"), cancellable = true)
 	private void dontRenderBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-		if (this.minecraft.screen instanceof ClickGui) {
+		if (this.minecraft.gui.screen() instanceof ClickGui) {
 			ci.cancel();
 		}
 	}

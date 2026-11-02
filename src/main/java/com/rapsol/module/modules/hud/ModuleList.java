@@ -41,7 +41,7 @@ public final class ModuleList extends Module implements HudListener {
 
     @Override
     public void onRenderHud(HudEvent event) {
-        if (mc.screen instanceof ClickGui) return;
+        if (mc.gui.screen() instanceof ClickGui) return;
 
         HudPoint point = HudLayout.get(HudElement.MODULE_LIST);
         List<Module> modules = modules();

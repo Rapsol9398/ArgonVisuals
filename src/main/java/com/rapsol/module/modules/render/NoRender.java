@@ -25,15 +25,15 @@ public class NoRender extends Module {
     @Override
     public void onEnable() {
         super.onEnable();
-        if (mc.levelRenderer != null)
-            mc.levelRenderer.allChanged();
+        if (mc.levelExtractor != null)
+            mc.levelExtractor.allChanged();
     }
 
     @Override
     public void onDisable() {
         super.onDisable();
-        if (mc.levelRenderer != null)
-            mc.levelRenderer.allChanged();
+        if (mc.levelExtractor != null)
+            mc.levelExtractor.allChanged();
     }
 
     public static boolean isActive() {

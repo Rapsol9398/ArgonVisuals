@@ -3,6 +3,7 @@ package com.rapsol.managers;
 import com.rapsol.Argon;
 import com.rapsol.module.Module;
 import com.rapsol.module.setting.*;
+import com.rapsol.utils.KeyUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -51,6 +52,8 @@ public final class ProfileManager {
 			if (profile == null)
 				return;
 
+			boolean glfw = !profile.has("sdl");
+
 			for (Module module : Argon.INSTANCE.getModuleManager().getModules()) {
 				JsonElement moduleJson = profile.get(String.valueOf(Argon.INSTANCE.getModuleManager().getModules().indexOf(module)));
 				if (moduleJson == null || !moduleJson.isJsonObject())
@@ -77,9 +80,10 @@ public final class ProfileManager {
 						} else if (setting instanceof NumberSetting numberSetting) {
 							numberSetting.setValue(settingJson.getAsDouble());
 						} else if (setting instanceof KeybindSetting keybindSetting) {
-							keybindSetting.setKey(settingJson.getAsInt());
+							int key = glfw ? KeyUtils.fromGlfw(settingJson.getAsInt()) : settingJson.getAsInt();
+							keybindSetting.setKey(key);
 							if (keybindSetting.isModuleKey())
-								module.setKey(settingJson.getAsInt());
+								module.setKey(key);
 						} else if (setting instanceof StringSetting stringSetting) {
 							stringSetting.setValue(settingJson.getAsString());
 						} else if (setting instanceof ColorSetting colorSetting) {
@@ -204,6 +208,7 @@ public final class ProfileManager {
 				windowsJson.add(window.getCategory().name(), position);
 			}
 			profile.add("windows", windowsJson);
+			profile.addProperty("sdl", true);
 
 			Files.writeString(tempPath, g.toJson(profile));
 			try {

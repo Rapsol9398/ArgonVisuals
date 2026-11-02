@@ -10,7 +10,7 @@ import com.rapsol.module.modules.hud.ModuleList;
 import com.rapsol.module.modules.render.*;
 import com.rapsol.module.setting.KeybindSetting;
 import com.rapsol.utils.printString;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,12 +85,12 @@ public final class ModuleManager implements ButtonListener {
 
 	@Override
 	public void onButtonPress(ButtonEvent event) {
-		if (event.button == GLFW.GLFW_KEY_UNKNOWN || event.action != GLFW.GLFW_PRESS || Argon.INSTANCE.clickGui.isTyping()) {
+		if (event.button == -1 || event.action != InputConstants.PRESS || Argon.INSTANCE.clickGui.isTyping()) {
 			return;
 		}
 
 		modules.forEach(module -> {
-			if (module.getKey() != GLFW.GLFW_KEY_UNKNOWN && module.getKey() == event.button) {
+			if (module.getKey() != -1 && module.getKey() == event.button) {
 				module.toggle();
 			}
 		});

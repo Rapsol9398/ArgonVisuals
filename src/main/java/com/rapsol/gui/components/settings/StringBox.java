@@ -11,7 +11,7 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.awt.*;
 
@@ -46,9 +46,9 @@ public final class StringBox extends RenderableSetting {
 
     @Override
     public void mouseClicked(double mouseX, double mouseY, int button) {
-        if(isHovered(mouseX, mouseY) && button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
-            Screen previous = mc.screen;
-            mc.setScreen(new Screen(Component.empty()) {
+        if(isHovered(mouseX, mouseY) && button == InputConstants.MOUSE_BUTTON_LEFT) {
+            Screen previous = mc.gui.screen();
+            mc.gui.setScreen(new Screen(Component.empty()) {
                 private String content = setting.getValue();
 
                 @Override
@@ -84,18 +84,18 @@ public final class StringBox extends RenderableSetting {
                 @Override
                 public boolean keyPressed(KeyEvent event) {
                     int keyCode = event.key();
-                    if(keyCode == GLFW.GLFW_KEY_ESCAPE) {
+                    if(keyCode == InputConstants.KEY_ESCAPE) {
                         setting.setValue(content.strip());
-                        mc.setScreen(previous);
+                        mc.gui.setScreen(previous);
                     }
 
-                    if(keyCode == GLFW.GLFW_KEY_V && (event.modifiers() & GLFW.GLFW_MOD_CONTROL) != 0)
+                    if(keyCode == InputConstants.KEY_V && (event.modifiers() & InputConstants.MOD_CONTROL) != 0)
                         content += mc.keyboardHandler.getClipboard();
 
-                    if(keyCode == GLFW.GLFW_KEY_C && (event.modifiers() & GLFW.GLFW_MOD_CONTROL) != 0)
-                        GLFW.glfwSetClipboardString(mc.getWindow().handle(), content);
+                    if(keyCode == InputConstants.KEY_C && (event.modifiers() & InputConstants.MOD_CONTROL) != 0)
+                        mc.keyboardHandler.setClipboard(content);
 
-                    if(keyCode == GLFW.GLFW_KEY_BACKSPACE) {
+                    if(keyCode == InputConstants.KEY_BACKSPACE) {
                         if(!content.isEmpty()) {
                             content = content.substring(0, content.length() - 1);
                         }

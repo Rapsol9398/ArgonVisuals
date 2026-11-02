@@ -242,11 +242,11 @@ public final class ModuleButton {
 
 	public void mouseClicked(double mouseX, double mouseY, int button) {
 		if (isHovered(mouseX, mouseY)) {
-			if (button == 0) {
+			if (button == 1) {
 				module.toggle();
 			}
 
-			if (button == 1) {
+			if (button == 3) {
 				if (module.getSettings().isEmpty()) return;
 				if (!extended)
 					onExtend();

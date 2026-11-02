@@ -50,7 +50,7 @@ public final class Info extends Module implements HudListener {
 
     @Override
     public void onRenderHud(HudEvent event) {
-        if (mc.screen instanceof ClickGui || mc.player == null) return;
+        if (mc.gui.screen() instanceof ClickGui || mc.player == null) return;
 
         List<String> parts = parts();
         if (parts.isEmpty()) return;

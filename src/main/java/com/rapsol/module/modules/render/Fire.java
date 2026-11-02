@@ -92,8 +92,8 @@ public final class Fire extends Module implements HudListener {
 	private void rebuild() {
 		lastHeight = height.getValue();
 		lastTint = tint();
-		if (mc.levelRenderer != null)
-			mc.levelRenderer.allChanged();
+		if (mc.levelExtractor != null)
+			mc.levelExtractor.allChanged();
 	}
 
 	public static boolean isActive() {

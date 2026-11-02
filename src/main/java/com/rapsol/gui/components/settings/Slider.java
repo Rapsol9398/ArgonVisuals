@@ -6,7 +6,7 @@ import com.rapsol.module.setting.Setting;
 import com.rapsol.utils.*;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.util.Mth;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.awt.*;
 
@@ -90,7 +90,7 @@ public final class Slider extends RenderableSetting {
 	@Override
 	public void keyPressed(int keyCode, int scanCode, int modifiers) {
 		if(mouseOver && parent.extended) {
-			if(keyCode == GLFW.GLFW_KEY_BACKSPACE)
+			if(keyCode == InputConstants.KEY_BACKSPACE)
 				reset();
 		}
 		super.keyPressed(keyCode, scanCode, modifiers);
@@ -103,7 +103,7 @@ public final class Slider extends RenderableSetting {
 
 	@Override
 	public void mouseClicked(double mouseX, double mouseY, int button) {
-		if (isHovered(mouseX, mouseY) && button == 0) {
+		if (isHovered(mouseX, mouseY) && button == 1) {
 			dragging = true;
 			slide(mouseX);
 		}
@@ -112,7 +112,7 @@ public final class Slider extends RenderableSetting {
 
 	@Override
 	public void mouseReleased(double mouseX, double mouseY, int button) {
-		if (dragging && button == 0)
+		if (dragging && button == 1)
 			dragging = false;
 
 		super.mouseReleased(mouseX, mouseY, button);

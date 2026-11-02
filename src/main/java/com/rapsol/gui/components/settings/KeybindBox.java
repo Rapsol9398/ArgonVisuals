@@ -7,7 +7,7 @@ import com.rapsol.utils.ColorUtils;
 import com.rapsol.utils.KeyUtils;
 import com.rapsol.utils.TextRenderer;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.awt.*;
 
@@ -25,14 +25,14 @@ public final class KeybindBox extends RenderableSetting {
 	public void mouseClicked(double mouseX, double mouseY, int button) {
 		if (isHovered(mouseX, mouseY)) {
 			if(!keybind.isListening()) {
-				if(button == 0) {
+				if(button == 1) {
 					keybind.toggleListening();
 					keybind.setListening(true);
 				}
 			} else {
-				if(keybind.isModuleKey()) parent.module.setKey(button);
+				if(keybind.isModuleKey()) parent.module.setKey(KeyUtils.MOUSE + button);
 
-				keybind.setKey(button);
+				keybind.setKey(KeyUtils.MOUSE + button);
 				keybind.setListening(false);
 			}
 		}
@@ -41,18 +41,18 @@ public final class KeybindBox extends RenderableSetting {
 
 	@Override
 	public void keyPressed(int keyCode, int scanCode, int modifiers) {
-		if(keyCode == GLFW.GLFW_KEY_BACKSPACE) {
+		if(keyCode == InputConstants.KEY_BACKSPACE) {
 			if(mouseOver)
 				reset();
 		} else {
-			if (keybind.isListening() && keyCode != GLFW.GLFW_KEY_ESCAPE) {
+			if (keybind.isListening() && keyCode != InputConstants.KEY_ESCAPE) {
 				if (keybind.isModuleKey()) parent.module.setKey(keyCode);
 
 				keybind.setKey(keyCode);
 				keybind.setListening(false);
 			}
 
-			if (keybind.getKey() == GLFW.GLFW_KEY_ESCAPE) {
+			if (keybind.getKey() == InputConstants.KEY_ESCAPE) {
 				if (keybind.isModuleKey()) parent.module.setKey(parent.module.getKey());
 
 				keybind.setKey(keybind.getKey());

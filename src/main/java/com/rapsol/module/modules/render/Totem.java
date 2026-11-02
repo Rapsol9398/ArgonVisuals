@@ -2,6 +2,7 @@ package com.rapsol.module.modules.render;
 
 
 import com.rapsol.mixin.accessor.ItemStackRenderStateAccessor;
+import com.rapsol.mixin.accessor.LayerRenderStateAccessor;
 import com.rapsol.module.Category;
 import com.rapsol.module.Module;
 import com.rapsol.module.setting.BooleanSetting;
@@ -15,9 +16,11 @@ import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.resources.model.geometry.ItemQuads;
 import net.minecraft.data.AtlasIds;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Totem extends Module {
@@ -45,12 +48,13 @@ public final class Totem extends Module {
 		if (!recolor.getValue()) return;
 
 		int tint = color.getValue().getRGB();
+		boolean translucent = tint >>> 24 < 255;
 		TextureAtlas atlas = mc.getAtlasManager().getAtlasOrThrow(AtlasIds.ITEMS);
 		ItemStackRenderStateAccessor accessor = (ItemStackRenderStateAccessor) state;
 
 		for (int i = 0; i < accessor.argon$getActiveLayerCount(); i++) {
 			ItemStackRenderState.LayerRenderState layer = accessor.argon$getLayers()[i];
-			List<BakedQuad> quads = layer.prepareQuadList();
+			List<BakedQuad> quads = new ArrayList<>(((LayerRenderStateAccessor) layer).argon$getQuads().all());
 			int slot = layer.tintLayers().size();
 			layer.tintLayers().add(tint);
 
@@ -68,9 +72,14 @@ public final class Totem extends Module {
 						move(quad.packedUV2(), sprite, gray),
 						move(quad.packedUV3(), sprite, gray),
 						quad.direction(),
-						new BakedQuad.MaterialInfo(gray, info.layer(), tint >>> 24 < 255 ? Sheets.translucentItemSheet() : info.itemRenderType(), slot, info.shade(), info.lightEmission())
+						new BakedQuad.MaterialInfo(gray, info.layer(),
+								translucent ? Sheets.translucentItemSheet() : info.itemRenderType(),
+								translucent ? Sheets.translucentItemGlintSheet() : info.itemGlintRenderType(),
+								translucent ? Sheets.translucentItemGlintSpecialSheet() : info.itemGlintSpecialRenderType(),
+								slot, info.shadeDirectionOverride(), info.lightEmission())
 				));
 			}
+			layer.setQuads(ItemQuads.split(quads));
 		}
 	}
 

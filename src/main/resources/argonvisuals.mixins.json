@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_25",
   "mixins": [
     "ClientConnectionMixin",
+    "ClientLevelMixin",
     "EntityMixin",
     "FogRendererMixin",
     "GuiMixin",
@@ -39,7 +40,9 @@
     "WeatherMixin",
     "MinecraftClientMixin",
     "accessor.ItemStackRenderStateAccessor",
-    "accessor.OverlayTextureAccessor"
+    "accessor.LayerRenderStateAccessor",
+    "accessor.OverlayTextureAccessor",
+    "accessor.ParticleGroupAccessor"
   ]
 }
 

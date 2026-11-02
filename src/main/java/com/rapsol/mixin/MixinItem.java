@@ -38,11 +38,11 @@ public class MixinItem {
 
         switch (itemPhysics.facingMode.getMode()) {
             case player:
-                poseStack.mulPose(camera.orientation);
+                poseStack.rotate(camera.orientation);
                 break;
 
             case flat:
-                poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
+                poseStack.rotate(Axis.XP.rotationDegrees(90.0F));
                 break;
 
             case none:
@@ -53,15 +53,15 @@ public class MixinItem {
 
         switch (itemPhysics.rotationAxis.getMode()) {
             case x:
-                poseStack.mulPose(Axis.XP.rotationDegrees(time));
+                poseStack.rotate(Axis.XP.rotationDegrees(time));
                 break;
 
             case y:
-                poseStack.mulPose(Axis.YP.rotationDegrees(time));
+                poseStack.rotate(Axis.YP.rotationDegrees(time));
                 break;
 
             case z:
-                poseStack.mulPose(Axis.ZP.rotationDegrees(time));
+                poseStack.rotate(Axis.ZP.rotationDegrees(time));
                 break;
 
             case none:

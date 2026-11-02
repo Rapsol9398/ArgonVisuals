@@ -12,7 +12,7 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ public final class ClickGui extends Screen {
 
 	@Override
 	public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
-		if (mc.screen == this) {
+		if (mc.gui.screen() == this) {
 			if (Argon.INSTANCE.previousScreen != null)
 				Argon.INSTANCE.previousScreen.extractRenderState(context, 0, 0, delta);
 
@@ -79,7 +79,7 @@ public final class ClickGui extends Screen {
 			if (currentColor.getAlpha() != (ClickGUI.background.getValue() ? 200 : 0))
 				currentColor = ColorUtils.smoothAlphaTransition(0.05F, ClickGUI.background.getValue() ? 200 : 0, currentColor);
 
-			if (mc.screen instanceof ClickGui)
+			if (mc.gui.screen() instanceof ClickGui)
 				context.fill(0, 0, mc.getWindow().getScreenWidth(), mc.getWindow().getScreenHeight(), currentColor.getRGB());
 
 			RenderUtils.unscaledProjection(context);
@@ -106,25 +106,25 @@ public final class ClickGui extends Screen {
 			return true;
 		}
 
-		if (event.key() == GLFW.GLFW_KEY_F && (event.modifiers() & GLFW.GLFW_MOD_CONTROL) != 0) {
+		if (event.key() == InputConstants.KEY_F && (event.modifiers() & InputConstants.MOD_CONTROL) != 0) {
 			search.focus();
 			return true;
 		}
 
 		if (search.focused()) {
 			switch (event.key()) {
-				case GLFW.GLFW_KEY_BACKSPACE -> search.backspace();
-				case GLFW.GLFW_KEY_ENTER, GLFW.GLFW_KEY_KP_ENTER -> search.blur();
-				case GLFW.GLFW_KEY_ESCAPE -> search.escape();
+				case InputConstants.KEY_BACKSPACE -> search.backspace();
+				case InputConstants.KEY_RETURN, InputConstants.KEY_NUMPADENTER -> search.blur();
+				case InputConstants.KEY_ESCAPE -> search.escape();
 			}
 			return true;
 		}
 
-		if (event.key() == GLFW.GLFW_KEY_ESCAPE && search.escape())
+		if (event.key() == InputConstants.KEY_ESCAPE && search.escape())
 			return true;
 
 		for (Window window : windows)
-			window.keyPressed(event.key(), event.scancode(), event.modifiers());
+			window.keyPressed(event.key(), event.keycode(), event.modifiers());
 
 		return super.keyPressed(event);
 	}
@@ -215,7 +215,7 @@ public final class ClickGui extends Screen {
 	}
 
 	public void onGuiClose() {
-		mc.setScreen(Argon.INSTANCE.previousScreen);
+		mc.gui.setScreen(Argon.INSTANCE.previousScreen);
 		currentColor = null;
 		panel = null;
 		search.escape();
