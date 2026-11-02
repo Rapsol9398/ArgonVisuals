@@ -85,7 +85,7 @@ public final class ModuleManager implements ButtonListener {
 
 	@Override
 	public void onButtonPress(ButtonEvent event) {
-		if (event.button == GLFW.GLFW_KEY_UNKNOWN || event.action != GLFW.GLFW_PRESS) {
+		if (event.button == GLFW.GLFW_KEY_UNKNOWN || event.action != GLFW.GLFW_PRESS || Argon.INSTANCE.clickGui.isTyping()) {
 			return;
 		}
 

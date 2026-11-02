@@ -52,6 +52,8 @@ public final class ModuleButton {
 				settings.add(new MinMaxSlider(this, minMaxSetting, settingOffset));
 			else if (setting instanceof ColorSetting)
 				settings.add(new ColorPicker(this, setting, settingOffset));
+			else if (setting instanceof ActionSetting)
+				settings.add(new ActionBox(this, setting, settingOffset));
 
 			settingOffset += parent.getHeight();
 		}
@@ -63,7 +65,30 @@ public final class ModuleButton {
 		recomputeOffsets();
 	}
 
+	private String query() {
+		return parent.parent.search.query();
+	}
+
+	private boolean matchesName() {
+		return module.getName().toString().toLowerCase().contains(query());
+	}
+
+	public List<RenderableSetting> visibleSettings() {
+		if (query().isEmpty() || matchesName())
+			return settings;
+		return settings.stream().filter(s -> s.setting.getName().toString().toLowerCase().contains(query())).toList();
+	}
+
+	public boolean isVisible() {
+		return query().isEmpty() || matchesName() || !visibleSettings().isEmpty();
+	}
+
+	public boolean isExtended() {
+		return extended || !query().isEmpty() && !matchesName() && !visibleSettings().isEmpty();
+	}
+
 	public int getExpandedHeight() {
+		List<RenderableSetting> settings = visibleSettings();
 		int totalHeight = parent.getHeight() * (settings.size() + 1);
 		for (RenderableSetting setting : settings)
 			totalHeight += setting.getExtraHeight();
@@ -71,6 +96,7 @@ public final class ModuleButton {
 	}
 
 	private void recomputeOffsets() {
+		List<RenderableSetting> settings = visibleSettings();
 		int accumulated = 0;
 		for (int i = 0; i < settings.size(); i++) {
 			RenderableSetting s = settings.get(i);
@@ -104,7 +130,7 @@ public final class ModuleButton {
 		if (defaultColor != toColor)
 			defaultColor = ColorUtils.smoothColorTransition(0.1F, toColor, defaultColor);
 
-		if (parent.moduleButtons.get(parent.moduleButtons.size() - 1) != this) {
+		if (parent.visibleButtons().getLast() != this) {
 			context.fill(parent.getX(), parent.getY() + offset, parent.getX() + parent.getWidth(), parent.getY() + parent.getHeight() + offset, currentColor.getRGB());
 			context.fillGradient(
 					parent.getX(), parent.getY() + offset,
@@ -121,7 +147,7 @@ public final class ModuleButton {
 					Utils.getMainColor(255, Argon.INSTANCE.getModuleManager().getModulesInCategory(module.getCategory()).indexOf(module)),
 					parent.getX(), parent.getY() + offset,
 					parent.getX() + 2, parent.getY() + (parent.getHeight() - 1) + offset,
-					0, 0, extended ? 0 : 2, 0, 50);
+					0, 0, isExtended() ? 0 : 2, 0, 50);
 		}
 
 		CharSequence nameChars = module.getName();
@@ -133,8 +159,8 @@ public final class ModuleButton {
 		renderHover(context, mouseX, mouseY, delta);
 		renderSettings(context, mouseX, mouseY, delta);
 
-		for (RenderableSetting renderableSetting : settings)
-			if (extended) renderableSetting.renderDescription(context, mouseX, mouseY, delta);
+		for (RenderableSetting renderableSetting : visibleSettings())
+			if (isExtended()) renderableSetting.renderDescription(context, mouseX, mouseY, delta);
 
 		if (hovered && !parent.dragging) {
 			CharSequence chars = module.getDescription();
@@ -173,11 +199,11 @@ public final class ModuleButton {
 	private void renderSettings(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
 		context.enableScissor(parent.getX(), parent.getY() + offset, parent.getX() + parent.getWidth(), (int) (parent.getY() + offset + animation.getValue()));
 
-		for (RenderableSetting renderableSetting : settings)
+		for (RenderableSetting renderableSetting : visibleSettings())
 			if (animation.getValue() > parent.getHeight())
 				renderableSetting.render(context, mouseX, mouseY, delta);
 
-		for (RenderableSetting renderableSetting : settings) {
+		for (RenderableSetting renderableSetting : visibleSettings()) {
 			if (animation.getValue() > parent.getHeight()) {
 				if (renderableSetting instanceof Slider slider) {
 					RenderUtils.renderCircle(context, new Color(0, 0, 0, 170), (slider.parentX() + (Math.max(slider.lerpedOffsetX, 2.5))), slider.parentY() + slider.offset + slider.parentOffset() + 27.5, 6, 15);
@@ -191,7 +217,7 @@ public final class ModuleButton {
 			}
 		}
 
-		for (RenderableSetting renderableSetting : settings)
+		for (RenderableSetting renderableSetting : visibleSettings())
 			if (animation.getValue() > parent.getHeight())
 				renderableSetting.renderPost(context, mouseX, mouseY, delta);
 
@@ -209,8 +235,8 @@ public final class ModuleButton {
 	}
 
 	public void mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		if (extended)
-			for (RenderableSetting renderableSetting : settings)
+		if (isExtended())
+			for (RenderableSetting renderableSetting : visibleSettings())
 				renderableSetting.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
@@ -233,8 +259,8 @@ public final class ModuleButton {
 					renderableSetting.reset();
 			}
 		}
-		if (extended) {
-			for (RenderableSetting renderableSetting : settings) {
+		if (isExtended()) {
+			for (RenderableSetting renderableSetting : visibleSettings()) {
 				if (button == 2 && renderableSetting.isHovered(mouseX, mouseY))
 					renderableSetting.reset();
 				else renderableSetting.mouseClicked(mouseX, mouseY, button);

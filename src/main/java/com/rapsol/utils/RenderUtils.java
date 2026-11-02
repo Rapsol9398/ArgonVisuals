@@ -61,6 +61,24 @@ public final class RenderUtils {
 				originX-rad, originY-rad, originX+rad, originY+rad);
 	}
 
+	public static void renderLine(GuiGraphicsExtractor context, Color c, double x0, double y0, double x1, double y1, double width) {
+		double len = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+		if (len < 1e-6) return;
+		double nx = -(y1 - y0) / len * width / 2, ny = (x1 - x0) / len * width / 2;
+		List<Vertex> quad = List.of(
+				new Vertex((float) (x0 + nx), (float) (y0 + ny), c.getRGB()),
+				new Vertex((float) (x1 + nx), (float) (y1 + ny), c.getRGB()),
+				new Vertex((float) (x1 - nx), (float) (y1 - ny), c.getRGB()),
+				new Vertex((float) (x0 - nx), (float) (y0 - ny), c.getRGB()));
+		addGuiMesh(context, RenderPipelines.GUI, TextureSetup.noTexture(), quad,
+				Math.min(x0, x1), Math.min(y0, y1), Math.max(x0, x1), Math.max(y0, y1));
+	}
+
+	public static void renderSearchIcon(GuiGraphicsExtractor context, Color c, int x, int y) {
+		renderRoundedOutline(context, c, x, y, x + 7, y + 7, 3.5, 3.5, 3.5, 3.5, 1.5, 10);
+		renderLine(context, c, x + 6.5, y + 6.5, x + 10, y + 10, 1.5);
+	}
+
 	public static void renderRoundedOutline(GuiGraphicsExtractor context, Color c,
 	                                        double fromX, double fromY, double toX, double toY,
 	                                        double r1, double r2, double r3, double r4, double width, double samples) {

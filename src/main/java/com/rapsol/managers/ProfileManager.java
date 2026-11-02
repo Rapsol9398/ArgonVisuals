@@ -4,6 +4,7 @@ import com.rapsol.Argon;
 import com.rapsol.module.Module;
 import com.rapsol.module.setting.*;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.fabricmc.loader.api.FabricLoader;
@@ -12,6 +13,8 @@ import java.awt.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class ProfileManager {
@@ -66,29 +69,37 @@ public final class ProfileManager {
 					if (settingJson == null)
 						continue;
 
-					if (setting instanceof BooleanSetting booleanSetting) {
-						booleanSetting.setValue(settingJson.getAsBoolean());
-					} else if (setting instanceof ModeSetting<?> modeSetting) {
-						modeSetting.setModeIndex(settingJson.getAsInt());
-					} else if (setting instanceof NumberSetting numberSetting) {
-						numberSetting.setValue(settingJson.getAsDouble());
-					} else if (setting instanceof KeybindSetting keybindSetting) {
-						keybindSetting.setKey(settingJson.getAsInt());
-						if (keybindSetting.isModuleKey())
-							module.setKey(settingJson.getAsInt());
-					} else if (setting instanceof StringSetting stringSetting) {
-						stringSetting.setValue(settingJson.getAsString());
-					} else if (setting instanceof ColorSetting colorSetting) {
-						colorSetting.setValue(new Color(settingJson.getAsInt(), true));
-					} else if (setting instanceof MinMaxSetting minMaxSetting) {
-						if (settingJson.isJsonObject()) {
-							JsonObject minMaxObject = settingJson.getAsJsonObject();
-							double minValue = minMaxObject.get("1").getAsDouble();
-							double maxValue = minMaxObject.get("2").getAsDouble();
+					try {
+						if (setting instanceof BooleanSetting booleanSetting) {
+							booleanSetting.setValue(settingJson.getAsBoolean());
+						} else if (setting instanceof ModeSetting<?> modeSetting) {
+							modeSetting.setModeIndex(settingJson.getAsInt());
+						} else if (setting instanceof NumberSetting numberSetting) {
+							numberSetting.setValue(settingJson.getAsDouble());
+						} else if (setting instanceof KeybindSetting keybindSetting) {
+							keybindSetting.setKey(settingJson.getAsInt());
+							if (keybindSetting.isModuleKey())
+								module.setKey(settingJson.getAsInt());
+						} else if (setting instanceof StringSetting stringSetting) {
+							stringSetting.setValue(settingJson.getAsString());
+						} else if (setting instanceof ColorSetting colorSetting) {
+							colorSetting.setValue(new Color(settingJson.getAsInt(), true));
+						} else if (setting instanceof MinMaxSetting minMaxSetting) {
+							if (settingJson.isJsonObject()) {
+								JsonObject minMaxObject = settingJson.getAsJsonObject();
+								double minValue = minMaxObject.get("1").getAsDouble();
+								double maxValue = minMaxObject.get("2").getAsDouble();
 
-							minMaxSetting.setMinValue(minValue);
-							minMaxSetting.setMaxValue(maxValue);
+								minMaxSetting.setMinValue(minValue);
+								minMaxSetting.setMaxValue(maxValue);
+							}
+						} else if (setting instanceof ParticleListSetting particleListSetting && settingJson.isJsonArray()) {
+							List<String> ids = new ArrayList<>();
+							for (JsonElement id : settingJson.getAsJsonArray())
+								ids.add(id.getAsString());
+							particleListSetting.replaceAll(ids);
 						}
+					} catch (Exception ignored) {
 					}
 				}
 
@@ -162,6 +173,10 @@ public final class ProfileManager {
 						minMaxObject.addProperty("2", minMaxSetting.getMaxValue());
 
 						moduleConfig.add(String.valueOf(module.getSettings().indexOf(setting)), minMaxObject);
+					} else if (setting instanceof ParticleListSetting particleListSetting) {
+						JsonArray ids = new JsonArray();
+						particleListSetting.hidden().stream().sorted().forEach(ids::add);
+						moduleConfig.add(String.valueOf(module.getSettings().indexOf(setting)), ids);
 					}
 				}
 

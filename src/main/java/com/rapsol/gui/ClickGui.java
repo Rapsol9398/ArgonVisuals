@@ -8,9 +8,11 @@ import com.rapsol.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
+import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ import static com.rapsol.Argon.mc;
 public final class ClickGui extends Screen {
 	public List<Window> windows = new ArrayList<>();
 	public final Window hudWindow;
+	public final SearchField search = new SearchField();
+	public ParticlePanel panel;
 	public Color currentColor;
 	private static final StackWalker sw = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
 
@@ -84,9 +88,12 @@ public final class ClickGui extends Screen {
 			super.extractRenderState(context, mouseX, mouseY, delta);
 
 			for (Window window : windows) {
-				window.render(context, mouseX, mouseY, delta);
+				window.render(context, panel == null ? mouseX : -1, panel == null ? mouseY : -1, delta);
 				window.updatePosition(mouseX, mouseY, delta);
 			}
+
+			if (panel != null)
+				panel.render(context, mouseX, mouseY, delta);
 
 			RenderUtils.scaledProjection(context);
 		}
@@ -94,11 +101,44 @@ public final class ClickGui extends Screen {
 
 	@Override
 	public boolean keyPressed(KeyEvent event) {
+		if (panel != null) {
+			panel.keyPressed(event.key(), event.modifiers());
+			return true;
+		}
+
+		if (event.key() == GLFW.GLFW_KEY_F && (event.modifiers() & GLFW.GLFW_MOD_CONTROL) != 0) {
+			search.focus();
+			return true;
+		}
+
+		if (search.focused()) {
+			switch (event.key()) {
+				case GLFW.GLFW_KEY_BACKSPACE -> search.backspace();
+				case GLFW.GLFW_KEY_ENTER, GLFW.GLFW_KEY_KP_ENTER -> search.blur();
+				case GLFW.GLFW_KEY_ESCAPE -> search.escape();
+			}
+			return true;
+		}
+
+		if (event.key() == GLFW.GLFW_KEY_ESCAPE && search.escape())
+			return true;
 
 		for (Window window : windows)
 			window.keyPressed(event.key(), event.scancode(), event.modifiers());
 
 		return super.keyPressed(event);
+	}
+
+	@Override
+	public boolean charTyped(CharacterEvent event) {
+		if (panel != null)
+			panel.charTyped(event.codepointAsString());
+		else search.type(event.codepointAsString());
+		return true;
+	}
+
+	public boolean isTyping() {
+		return search.focused() || panel != null;
 	}
 
 	@Override
@@ -114,6 +154,17 @@ public final class ClickGui extends Screen {
 		mouseX *= (int) Minecraft.getInstance().getWindow().getGuiScale();
 		mouseY *= (int) Minecraft.getInstance().getWindow().getGuiScale();
 
+		if (panel != null) {
+			panel.mouseClicked(mouseX, mouseY, button);
+			return true;
+		}
+
+		boolean onSearch = false;
+		for (Window window : windows)
+			onSearch |= window.isSearchHovered(mouseX, mouseY);
+		if (onSearch) search.focus();
+		else search.blur();
+
 		for (Window window : windows)
 			window.mouseClicked(mouseX, mouseY, button);
 
@@ -127,6 +178,9 @@ public final class ClickGui extends Screen {
 		int button = event.button();
 		mouseX *= (int) Minecraft.getInstance().getWindow().getGuiScale();
 		mouseY *= (int) Minecraft.getInstance().getWindow().getGuiScale();
+		if (panel != null)
+			return true;
+
 		for (Window window : windows)
 			window.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 
@@ -136,6 +190,11 @@ public final class ClickGui extends Screen {
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
 		Minecraft mc = Minecraft.getInstance();
+		if (panel != null) {
+			panel.mouseScrolled(mouseX * mc.getWindow().getGuiScale(), mouseY * mc.getWindow().getGuiScale(), verticalAmount);
+			return true;
+		}
+
 		mouseY *= mc.getWindow().getGuiScale();
 
 		for (Window window : windows)
@@ -158,6 +217,8 @@ public final class ClickGui extends Screen {
 	public void onGuiClose() {
 		mc.setScreen(Argon.INSTANCE.previousScreen);
 		currentColor = null;
+		panel = null;
+		search.escape();
 
 		for (Window window : windows)
 			window.onGuiClose();
@@ -170,6 +231,9 @@ public final class ClickGui extends Screen {
 		int button = event.button();
 		mouseX *= (int) Minecraft.getInstance().getWindow().getGuiScale();
 		mouseY *= (int) Minecraft.getInstance().getWindow().getGuiScale();
+
+		if (panel != null)
+			panel.mouseReleased(button);
 
 		for (Window window : windows)
 			window.mouseReleased(mouseX, mouseY, button);

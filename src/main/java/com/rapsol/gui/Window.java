@@ -72,8 +72,45 @@ public final class Window {
 
 		updateButtons(delta);
 
-		for (ModuleButton moduleButton : moduleButtons)
+		if (category == Category.CLIENT)
+			renderSearch(context);
+
+		for (ModuleButton moduleButton : visibleButtons())
 			moduleButton.render(context, mouseX, mouseY, delta);
+	}
+
+	private void renderSearch(GuiGraphicsExtractor context) {
+		SearchField search = parent.search;
+		int top = prevY + height;
+		context.fill(prevX, top, prevX + width, top + height, new Color(0, 0, 0, 170).getRGB());
+
+		int fx0 = prevX + 6, fy0 = top + 4, fx1 = prevX + width - 6, fy1 = top + height - 4;
+		RenderUtils.renderRoundedQuad(context, new Color(0, 0, 0, 120), fx0, fy0, fx1, fy1, 4, 10);
+		RenderUtils.renderRoundedOutline(context, search.focused() ? Utils.getMainColor(255, 0) : new Color(50, 50, 50, 255), fx0, fy0, fx1, fy1, 4, 4, 4, 4, 1, 10);
+		RenderUtils.renderSearchIcon(context, new Color(150, 150, 150, 255), fx0 + 7, top + height / 2 - 4);
+
+		int textX = fx0 + 23;
+		String text = search.text();
+		if (text.isEmpty() && !search.focused()) {
+			TextRenderer.text("Search...", context, textX, top + 8, new Color(150, 150, 150, 255).getRGB());
+			return;
+		}
+
+		while (!text.isEmpty() && TextRenderer.getWidth(text) > fx1 - 6 - textX)
+			text = text.substring(1);
+		TextRenderer.text(text, context, textX, top + 8, new Color(245, 245, 245, 255).getRGB());
+		if (search.focused() && (System.currentTimeMillis() / 500) % 2 == 0) {
+			int caretX = textX + TextRenderer.getWidth(text) + 1;
+			context.fill(caretX, top + 8, caretX + 1, top + height - 8, new Color(245, 245, 245, 255).getRGB());
+		}
+	}
+
+	public boolean isSearchHovered(double mouseX, double mouseY) {
+		return category == Category.CLIENT && mouseX > prevX && mouseX < prevX + width && mouseY > prevY + height && mouseY < prevY + 2 * height;
+	}
+
+	public List<ModuleButton> visibleButtons() {
+		return moduleButtons.stream().filter(ModuleButton::isVisible).toList();
 	}
 
 
@@ -120,24 +157,24 @@ public final class Window {
 			}
 		}
 		if (extended)
-			for (ModuleButton moduleButton : moduleButtons)
+			for (ModuleButton moduleButton : visibleButtons())
 				moduleButton.mouseClicked(mouseX, mouseY, button);
 	}
 
 	public void mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
 		if (extended) {
-			for (ModuleButton moduleButton : moduleButtons) {
+			for (ModuleButton moduleButton : visibleButtons()) {
 				moduleButton.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 			}
 		}
 	}
 
 	public void updateButtons(float delta) {
-		int offset = height;
+		int offset = category == Category.CLIENT ? height * 2 : height;
 
-		for(ModuleButton moduleButton : moduleButtons) {
+		for(ModuleButton moduleButton : visibleButtons()) {
 			moduleButton.updateLayout(delta);
-			moduleButton.animation.animate(0.5 * delta, moduleButton.extended ? moduleButton.getExpandedHeight() : height);
+			moduleButton.animation.animate(0.5 * delta, moduleButton.isExtended() ? moduleButton.getExpandedHeight() : height);
 
 			double supHeight = moduleButton.animation.getValue();
 			moduleButton.offset = offset;
@@ -198,7 +235,7 @@ public final class Window {
 
 	public boolean contains(double mouseX, double mouseY) {
 		int bottom = prevY + height;
-		for (ModuleButton moduleButton : moduleButtons)
+		for (ModuleButton moduleButton : visibleButtons())
 			bottom = Math.max(bottom, prevY + moduleButton.offset + (int) moduleButton.animation.getValue());
 		return mouseX > prevX && mouseX < prevX + width && mouseY > prevY && mouseY < bottom;
 	}

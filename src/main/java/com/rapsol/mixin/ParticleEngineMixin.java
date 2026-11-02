@@ -3,18 +3,19 @@ package com.rapsol.mixin;
 import com.rapsol.Argon;
 import com.rapsol.module.modules.render.Particle;
 import net.minecraft.client.Camera;
-import net.minecraft.client.particle.FireworkParticles;
 import net.minecraft.client.particle.ParticleGroup;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.state.level.ParticlesRenderState;
+import net.minecraft.core.particles.ParticleOptions;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
 
@@ -41,30 +42,15 @@ public class ParticleEngineMixin {
 		}
 	}
 
-	private boolean shouldHideParticle(Particle module, net.minecraft.client.particle.Particle particle) {
+	@Inject(method = "makeParticle", at = @At("HEAD"), cancellable = true)
+	private void argon$hideParticleType(ParticleOptions options, double x, double y, double z, double xa, double ya, double za,
+	                                    CallbackInfoReturnable<net.minecraft.client.particle.Particle> cir) {
+		Particle module = Argon.INSTANCE.getModuleManager().getModule(Particle.class);
+		if (module != null && module.isEnabled() && module.hides(options.getType()))
+			cir.setReturnValue(null);
+	}
 
-		if (module.disableAll.getValue()) return true;
-		if (particle instanceof net.minecraft.client.particle.TotemParticle)
-			return !module.totem.getValue();
-		if (particle instanceof FireworkParticles.Starter)
-			return !module.firework.getValue();
-		if (particle instanceof net.minecraft.client.particle.SpellParticle)
-			return !module.potion.getValue();
-		if (particle instanceof net.minecraft.client.particle.TerrainParticle)
-			return !module.blockBreak.getValue();
-		if (particle instanceof net.minecraft.client.particle.HugeExplosionParticle
-				|| particle instanceof net.minecraft.client.particle.HugeExplosionSeedParticle
-				|| particle instanceof net.minecraft.client.particle.ExplodeParticle) {
-			return !module.explosion.getValue();
-		}
-		if (particle instanceof net.minecraft.client.particle.CampfireSmokeParticle
-				|| particle instanceof net.minecraft.client.particle.SmokeParticle
-				|| particle instanceof net.minecraft.client.particle.WhiteSmokeParticle
-				|| particle instanceof net.minecraft.client.particle.LargeSmokeParticle) {
-			return !module.smoke.getValue();
-		}
-		if (particle instanceof net.minecraft.client.particle.SnowflakeParticle)
-			return !module.snow.getValue();
-		return false;
+	private boolean shouldHideParticle(Particle module, net.minecraft.client.particle.Particle particle) {
+		return particle instanceof net.minecraft.client.particle.TerrainParticle && module.particles.isHidden("block");
 	}
 }
