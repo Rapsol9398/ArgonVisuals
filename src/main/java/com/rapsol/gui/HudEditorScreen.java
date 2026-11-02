@@ -132,7 +132,7 @@ public class HudEditorScreen extends Screen {
             return true;
         }
 
-        if (btn != 0) {
+        if (btn != 1) {
             return super.mouseClicked(event, doubleClick);
         }
 

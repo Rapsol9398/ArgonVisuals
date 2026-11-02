@@ -140,7 +140,7 @@ public final class Window {
 	public void mouseClicked(double mouseX, double mouseY, int button) {
 		if (isHovered(mouseX, mouseY)) {
 			switch (button) {
-				case 0: {
+				case 1: {
 					if(!parent.isDraggingAlready()) {
 						dragging = true;
 						dragX = (int) (mouseX - x);
@@ -148,7 +148,7 @@ public final class Window {
 					}
 					break;
 				}
-				case 1: {
+				case 3: {
 					if (!dragging) {
 						//extended = !extended;
 					}
