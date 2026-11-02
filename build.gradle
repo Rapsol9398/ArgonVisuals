@@ -5,6 +5,7 @@ plugins {
 
 version = project.mod_version
 group = project.maven_group
+base.archivesName = "ArgonVisuals"
 
 repositories {
 	// Add repositories to retrieve artifacts from in here.
