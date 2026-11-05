@@ -52,6 +52,11 @@ public final class StringBox extends RenderableSetting {
                 private String content = setting.getValue();
 
                 @Override
+                protected void init() {
+                    mc.textInputManager().startTextInput(this);
+                }
+
+                @Override
                 public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
                     RenderUtils.unscaledProjection(context);
                     //mouseX *= (int) Minecraft.getInstance().getWindow().getGuiScale();

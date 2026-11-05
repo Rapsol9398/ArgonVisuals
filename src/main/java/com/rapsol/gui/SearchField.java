@@ -1,5 +1,7 @@
 package com.rapsol.gui;
 
+import static com.rapsol.Argon.mc;
+
 public final class SearchField {
 	private final StringBuilder text = new StringBuilder();
 	private boolean focused;
@@ -18,10 +20,12 @@ public final class SearchField {
 
 	public void focus() {
 		focused = true;
+		mc.textInputManager().startTextInput(this);
 	}
 
 	public void blur() {
 		focused = false;
+		mc.textInputManager().stopTextInput(this);
 	}
 
 	public void type(String chars) {
@@ -37,7 +41,7 @@ public final class SearchField {
 	public boolean escape() {
 		boolean had = focused || !text.isEmpty();
 		text.setLength(0);
-		focused = false;
+		blur();
 		return had;
 	}
 }
